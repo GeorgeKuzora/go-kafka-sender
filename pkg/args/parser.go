@@ -2,7 +2,9 @@ package args
 
 import (
 	"errors"
-	"flag"
+	"os"
+
+	"github.com/GeorgeKuzora/go-kafka-sender/pkg/config"
 )
 
 type Args struct {
@@ -10,8 +12,14 @@ type Args struct {
 	FilePath string
 }
 
+func (a *Args) ToConfig() config.Config {
+	return config.Config{
+		Url: a.Url,
+	}
+}
+
 func GetArgs() (Args, error) {
-	args := flag.Args()
+	args := os.Args
 	if len(args) < 3 {
 		return Args{}, errors.New("there should be at least 2 arguments")
 	}
