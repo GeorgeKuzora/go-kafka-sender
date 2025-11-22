@@ -7,6 +7,7 @@ import (
 	"github.com/GeorgeKuzora/go-kafka-sender/pkg/args"
 	"github.com/GeorgeKuzora/go-kafka-sender/pkg/config"
 	"github.com/GeorgeKuzora/go-kafka-sender/pkg/fs"
+	"github.com/GeorgeKuzora/go-kafka-sender/pkg/kafka"
 )
 
 func Run() {
@@ -16,17 +17,18 @@ func Run() {
 			os.Exit(1)
 		}	
 	config := config.Configure(args.ToConfig())
-	fmt.Println(config)
 
 	file, err := os.Open(args.FilePath)
 	if err != nil {
 		fmt.Printf("failed to open a file %s", args.FilePath)
+		os.Exit(1)
 	}
 	defer func() {
 		err := file.Close()
 		if err != nil {
 			fmt.Printf("failed to close a file %s\n", args.FilePath)
 		}
+		os.Exit(1)
 	}()
 
 	for line, err := range fs.IterateOverFile(file) {
@@ -34,6 +36,13 @@ func Run() {
 			fmt.Printf("failed to read a file %s", args.FilePath)
 			return
 		}
-		fmt.Println(line)
+		producer := kafka.KafkaProducer {
+			Host: config.Url,
+		}
+		err := producer.Send(line)
+		if err != nil {
+			fmt.Printf("failed to send Kafka message")
+			os.Exit(1)
+		}
 	}
 }
