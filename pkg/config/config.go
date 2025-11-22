@@ -18,11 +18,15 @@ const (
 
 type Config struct {
 	Url string `yaml:"url"`
+	Topic string `yaml:"url"`
 }
 
 func (c *Config) merge(oc Config) *Config {
 	if oc.Url != "" {
 		c.Url = oc.Url
+	}
+	if oc.Topic != "" {
+		c.Topic = oc.Topic
 	}
 	return c
 }
@@ -42,6 +46,7 @@ func Configure(argsConfig Config) Config {
 func createBaseConfig() Config {
 	return Config{
 		Url: "http://127.0.0.1:9092",
+		Topic: "",
 	}
 }
 
