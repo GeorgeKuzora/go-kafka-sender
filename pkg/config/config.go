@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/GeorgeKuzora/go-kafka-sender/pkg/kafka"
 	"gopkg.in/yaml.v3"
 )
 
@@ -29,6 +30,13 @@ func (c *Config) merge(oc Config) *Config {
 		c.Topic = oc.Topic
 	}
 	return c
+}
+
+func (c *Config) ToConfigMap() kafka.ConfigMap {
+	return kafka.ConfigMap {
+		Host: c.Url,
+		Topic: c.Topic,
+	}
 }
 
 func Configure(argsConfig Config) Config {

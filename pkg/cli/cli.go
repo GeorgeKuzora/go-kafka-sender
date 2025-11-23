@@ -36,9 +36,7 @@ func Run() {
 			fmt.Printf("failed to read a file %s", args.FilePath)
 			return
 		}
-		producer := kafka.KafkaProducer {
-			Host: config.Url,
-		}
+		producer := kafka.NewProducer(config.ToConfigMap())
 		err := producer.Send(line)
 		if err != nil {
 			fmt.Printf("failed to send Kafka message")

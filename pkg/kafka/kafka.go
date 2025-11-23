@@ -17,7 +17,7 @@ type KafkaProducer struct {
 	ctx context.Context
 }
 
-func (kp *KafkaProducer) NewProducer(configMap ConfigMap) KafkaProducer {
+func NewProducer(configMap ConfigMap) KafkaProducer {
 	config := kafka.WriterConfig {
 		Brokers: []string{configMap.Host},
 		Topic: configMap.Topic,
