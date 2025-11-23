@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/GeorgeKuzora/go-kafka-sender/pkg/args"
 	"github.com/GeorgeKuzora/go-kafka-sender/pkg/kafka"
 	"gopkg.in/yaml.v3"
 )
@@ -38,6 +39,14 @@ func (c *Config) ToConfigMap() kafka.ConfigMap {
 		Topic: c.Topic,
 	}
 }
+
+func FromArgs(args args.Args) Config {
+	return Config{
+		Url: args.Url,
+		Topic: args.Topic,
+	}
+}
+
 
 func Configure(argsConfig Config) Config {
 	config := createBaseConfig()

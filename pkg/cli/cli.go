@@ -16,7 +16,7 @@ func Run() {
 			fmt.Println(err)
 			os.Exit(1)
 		}	
-	config := config.Configure(args.ToConfig())
+	config := config.Configure(config.FromArgs(args))
 
 	file, err := os.Open(args.FilePath)
 	if err != nil {
