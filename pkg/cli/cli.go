@@ -16,12 +16,8 @@ func Run() {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-	// config := config.Configure(config.FromArgs(args))
-	conf := config.Config{
-		Url: "http://127.0.0.1:9092",
-		Topic: "test-topic",
-	}
 
+	conf := config.Configure(config.FromArgs(args))
 
 	file, err := os.Open(args.FilePath)
 	if err != nil {
