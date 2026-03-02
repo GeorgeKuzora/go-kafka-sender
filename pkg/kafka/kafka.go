@@ -21,21 +21,21 @@ func NewProducer(configMap ConfigMap) KafkaProducer {
 	config := kafka.WriterConfig {
 		Brokers: []string{configMap.Host},
 		Topic: configMap.Topic,
-		Balancer: &kafka.LeastBytes{},
 	}
-	writer := kafka.NewWriter(config)
+	ctx := context.Background()
+	writer := *kafka.NewWriter(config)
 	return KafkaProducer {
 		configMap: configMap,
-		broker: writer,
+		broker: &writer,
+		ctx: ctx,
 	}
 }
 
 func (kp *KafkaProducer) Send(message string) error {
-	ctx := context.Background()
 	if kp == nil {
 		return fmt.Errorf("need initialized Kafka producer")
 	}
-	err := kp.broker.WriteMessages(ctx, kafka.Message{Value: []byte(message)})
+	err := kp.broker.WriteMessages(kp.ctx, kafka.Message{Value: []byte(message)})
 	if err != nil {
 		return fmt.Errorf("failed to send a message: %s, %w", message, err)
 	}

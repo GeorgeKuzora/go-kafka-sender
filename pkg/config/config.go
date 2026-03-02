@@ -1,8 +1,21 @@
 package config
 
 import (
+	"fmt"
+	"os"
+	"path/filepath"
+
 	"github.com/GeorgeKuzora/go-kafka-sender/pkg/args"
 	"github.com/GeorgeKuzora/go-kafka-sender/pkg/kafka"
+	"gopkg.in/yaml.v3"
+)
+
+type filePathStatus int
+
+const (
+	valid filePathStatus = iota
+	notExits
+	permissionDenied
 )
 
 type Config struct {
@@ -101,11 +114,11 @@ func readConfigFile(filePath string) (Config, error) {
 func loadYaml(path string, config *Config) error {
 	data, err := os.ReadFile(path)
 	if err != nil {
-		return fmt.Errorf("can't read config %w", err)	
+		return fmt.Errorf("can't read config %w", err)
 	}
 	err = yaml.Unmarshal(data, config)
 	if err != nil {
-		return fmt.Errorf("can't parse YAML config %w", err)	
+		return fmt.Errorf("can't parse YAML config %w", err)
 	}
 	return nil
 }
