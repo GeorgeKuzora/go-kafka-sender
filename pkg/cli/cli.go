@@ -19,7 +19,7 @@ func Run() {
 	// config := config.Configure(config.FromArgs(args))
 	conf := config.Config{
 		Url: "http://127.0.0.1:9092",
-		Topic: "test_topic",
+		Topic: "test-topic",
 	}
 
 
@@ -48,4 +48,6 @@ func Run() {
 			os.Exit(1)
 		}
 	}
+
+	fmt.Println("Message sent successfully!")
 }

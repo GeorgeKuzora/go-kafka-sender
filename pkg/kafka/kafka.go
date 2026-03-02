@@ -35,7 +35,7 @@ func (kp *KafkaProducer) Send(message string) error {
 	if kp == nil {
 		return fmt.Errorf("need initialized Kafka producer")
 	}
-	err := kp.broker.WriteMessages(ctx, kafka.Message{Value: []byte("message")})
+	err := kp.broker.WriteMessages(ctx, kafka.Message{Value: []byte(message)})
 	if err != nil {
 		return fmt.Errorf("failed to send a message: %s, %w", message, err)
 	}
