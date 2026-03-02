@@ -1,21 +1,8 @@
 package config
 
 import (
-	"fmt"
-	"os"
-	"path/filepath"
-
 	"github.com/GeorgeKuzora/go-kafka-sender/pkg/args"
 	"github.com/GeorgeKuzora/go-kafka-sender/pkg/kafka"
-	"gopkg.in/yaml.v3"
-)
-
-type filePathStatus int
-
-const (
-	valid filePathStatus = iota
-	notExits
-	permissionDenied
 )
 
 type Config struct {
