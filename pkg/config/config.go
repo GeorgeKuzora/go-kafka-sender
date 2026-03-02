@@ -51,8 +51,6 @@ func FromArgs(args args.Args) Config {
 func Configure(argsConfig Config) Config {
 	config := createBaseConfig()
 	config = *config.merge(
-		getSystemConfig(),
-	).merge(
 		getUserConfig(),
 	).merge(
 		argsConfig,
@@ -62,8 +60,8 @@ func Configure(argsConfig Config) Config {
 
 func createBaseConfig() Config {
 	return Config{
-		Url: "http://127.0.0.1:9092",
-		Topic: "",
+		Url: "127.0.0.1:9092",
+		Topic: "test-topic",
 	}
 }
 
@@ -79,19 +77,12 @@ func getUserConfig() Config {
 	return config
 }
 
-func getSystemConfig() Config {
-	return Config{}
-}
-
 func findUserConfigFilePath() (string, error) {
-	if configPath := os.Getenv("GO_KAFKA_CONFIG_PATH"); configPath != "" {
-		return configPath, nil
-	}
-	homeDir, err := os.UserHomeDir()
+	wd, err := os.Getwd()
 	if err != nil {
-		return "", fmt.Errorf("failed to get user home directory: %w", err)
+		return "", fmt.Errorf("can't find cwd")
 	}
-	return filepath.Join(homeDir, ".config", "gokafka", "config.yaml"), nil
+	return filepath.Join(wd, ".gokafka"), nil
 }
 
 func readConfigFile(filePath string) (Config, error) {
