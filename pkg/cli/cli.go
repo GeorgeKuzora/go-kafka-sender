@@ -15,8 +15,13 @@ func Run() {
 	if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
-		}	
-	config := config.Configure(config.FromArgs(args))
+		}
+	// config := config.Configure(config.FromArgs(args))
+	conf := config.Config{
+		Url: "http://127.0.0.1:9092",
+		Topic: "test_topic",
+	}
+
 
 	file, err := os.Open(args.FilePath)
 	if err != nil {
@@ -27,8 +32,8 @@ func Run() {
 		err := file.Close()
 		if err != nil {
 			fmt.Printf("failed to close a file %s\n", args.FilePath)
+			os.Exit(1)
 		}
-		os.Exit(1)
 	}()
 
 	for line, err := range fs.IterateOverFile(file) {
@@ -36,7 +41,7 @@ func Run() {
 			fmt.Printf("failed to read a file %s", args.FilePath)
 			return
 		}
-		producer := kafka.NewProducer(config.ToConfigMap())
+		producer := kafka.NewProducer(conf.ToConfigMap())
 		err := producer.Send(line)
 		if err != nil {
 			fmt.Printf("failed to send Kafka message")
