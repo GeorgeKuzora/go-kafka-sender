@@ -15,7 +15,7 @@ func Run() {
 	if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
-		}
+ 		}
 
 	conf := config.Configure(config.FromArgs(args))
 
@@ -28,8 +28,8 @@ func Run() {
 		err := file.Close()
 		if err != nil {
 			fmt.Printf("failed to close a file %s\n", args.FilePath)
-			os.Exit(1)
 		}
+		os.Exit(1)
 	}()
 
 	config_map := conf.ToConfigMap()
