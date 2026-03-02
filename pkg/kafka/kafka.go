@@ -19,8 +19,8 @@ type KafkaProducer struct {
 
 func NewProducer(configMap ConfigMap) KafkaProducer {
 	config := kafka.WriterConfig {
-		Brokers: []string{"localhost:9092"},
-		Topic: "test-topic",
+		Brokers: []string{configMap.Host},
+		Topic: configMap.Topic,
 		Balancer: &kafka.LeastBytes{},
 	}
 	writer := kafka.NewWriter(config)

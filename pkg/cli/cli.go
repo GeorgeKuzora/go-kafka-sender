@@ -32,12 +32,14 @@ func Run() {
 		}
 	}()
 
+	config_map := conf.ToConfigMap()
+	producer := kafka.NewProducer(config_map)
+
 	for line, err := range fs.IterateOverFile(file) {
 		if err != nil {
 			fmt.Printf("failed to read a file %s", args.FilePath)
 			return
 		}
-		producer := kafka.NewProducer(conf.ToConfigMap())
 		err := producer.Send(line)
 		if err != nil {
 			fmt.Printf("failed to send Kafka message")
